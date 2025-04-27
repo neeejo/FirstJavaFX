@@ -19,7 +19,6 @@ VBox {
     -fx-background-radius: 10;
     -fx-pref-width: 200px;
     -fx-pref-height: 300px;
-    -fx-
 }
 VBox:hover {
     -fx-background-color: transparent;

@@ -43,6 +43,11 @@
             <artifactId>jave-all-deps</artifactId>
             <version>3.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>22</version>
+        </dependency>
     </dependencies>
 
     <build>

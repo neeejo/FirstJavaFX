@@ -11,10 +11,10 @@
             maxHeight="1048.0" maxWidth="1920.0" stylesheets="@../../../stylesheet.css"
             xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.firstjavafx.controller.RootController">
-    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true"  prefWidth="1920">
-        <content>
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" prefWidth="1920">
         <TilePane fx:id="movieCards"
-                alignment="CENTER_LEFT"
+                  alignment="CENTER_LEFT"
+                  onMouseClicked="#playMedia"
         >
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -23,6 +23,5 @@
         <Label fx:id="emptyFolder" visible="false" alignment="CENTER"
                AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-        </content>
     </ScrollPane>
 </AnchorPane>

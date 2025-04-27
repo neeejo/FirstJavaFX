@@ -1,22 +1,32 @@
 package com.example.firstjavafx.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import ws.schild.jave.Encoder;
 import ws.schild.jave.EncoderException;
 import ws.schild.jave.InputFormatException;
 import ws.schild.jave.MultimediaObject;
+import ws.schild.jave.encode.AudioAttributes;
+import ws.schild.jave.encode.EncodingAttributes;
+import ws.schild.jave.encode.VideoAttributes;
+import ws.schild.jave.info.VideoInfo;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 
 
 public class RootController implements Initializable {
@@ -145,5 +156,67 @@ public class RootController implements Initializable {
         var seconds = durationSeconds % 60;
         return new Label(String.format("Durata: %02d:%02d:%02d", hours, minutes, seconds));
 
+    }
+
+    public void playMedia(MouseEvent mouseEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(
+                        getClass().getResource("/com/example/firstjavafx/mediaPlayer.fxml")
+                )
+        );
+        Parent mediaPlayer = loader.load();
+        MediaPlayerController mediaPlayerController = loader.getController();
+
+        TilePane selectedTile = (TilePane) mouseEvent.getSource();
+        VBox selectedVBox = (VBox) selectedTile.getChildren().getFirst();
+        Label movieTitle = (Label) selectedVBox.getChildren().get(2);
+        String fileName = movieTitle.getText().replace("Titolo: \n", "").trim();
+
+        mediaPlayerController.setMovieFile(
+                encodeFile(fileName)
+        );
+        mediaPlayerController.initialize();
+        var stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        var scene = new Scene(mediaPlayer);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private File encodeFile(String fileName) {
+        File movieFile = new File(folderPath + "\\" + fileName);
+
+        File transcodedFile = new File(folderPath + File.separator + fileName + "_transcoded.mp4");
+
+        try {
+
+            MultimediaObject multimediaObject = new MultimediaObject(movieFile);
+
+
+            EncodingAttributes encodingAttributes = getEncodingAttributes();
+
+            Encoder encoder = new Encoder();
+            encoder.encode(multimediaObject, transcodedFile, encodingAttributes);
+
+            return transcodedFile;
+        } catch (EncoderException e) {
+            System.err.println("Error during transcoding: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static EncodingAttributes getEncodingAttributes() {
+        EncodingAttributes encodingAttributes = new EncodingAttributes();
+        encodingAttributes.setOutputFormat("mp4");
+
+        VideoAttributes videoAttributes = new VideoAttributes();
+        videoAttributes.setCodec("h264");
+
+        encodingAttributes.setVideoAttributes(videoAttributes);
+
+        AudioAttributes audioAttributes = new AudioAttributes();
+        audioAttributes.setCodec("aac");
+
+        encodingAttributes.setAudioAttributes(audioAttributes);
+        return encodingAttributes;
     }
 }

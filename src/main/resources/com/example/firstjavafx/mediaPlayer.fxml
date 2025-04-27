@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<AnchorPane xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="box"
+            fx:controller="com.example.firstjavafx.controller.MediaPlayerController"
+            prefHeight="1048.0" prefWidth="1920.0"
+            maxHeight="1048.0" maxWidth="1920.0" stylesheets="@../../../stylesheet.css">
+    <VBox prefHeight="875" prefWidth="600" alignment="CENTER">
+        <padding>
+        <Insets top="25.0"/>
+        </padding>
+        <MediaView fx:id="mediaPlayer" fitWidth="600" fitHeight="800"/>
+        <HBox prefHeight="25">
+            <Button fx:id="play" prefHeight="25" mnemonicParsing="false" onAction="#playMedia" text="PLAY"/>
+            <Button fx:id="pause" prefHeight="25" mnemonicParsing="false" onAction="#pauseMedia" text="PAUSE"/>
+            <Button fx:id="reset" prefHeight="25" mnemonicParsing="false" onAction="#resetMedia" text="RESET"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

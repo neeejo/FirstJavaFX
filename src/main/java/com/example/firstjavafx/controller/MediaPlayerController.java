@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
@@ -13,8 +12,6 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class MediaPlayerController {
 

@@ -143,9 +143,9 @@ public class RootController implements Initializable {
 
 
         } catch (InputFormatException e) {
-            System.out.println("Errore InputForm in buildRows {}" + e.getMessage());
+            System.out.println(file.getName() + " Errore InputForm in buildRows {}" + e.getMessage());
         } catch (EncoderException e) {
-            System.out.println("Errore Encoder in buildRows {}" + e.getMessage());
+            System.out.println(file.getName() + " Errore Encoder in buildRows {}" + e.getMessage());
         }
     }
 
@@ -171,52 +171,13 @@ public class RootController implements Initializable {
         VBox selectedVBox = (VBox) selectedTile.getChildren().getFirst();
         Label movieTitle = (Label) selectedVBox.getChildren().get(2);
         String fileName = movieTitle.getText().replace("Titolo: \n", "").trim();
+        File movieFile = new File(folderPath + "\\" + fileName);
 
-        mediaPlayerController.setMovieFile(
-                encodeFile(fileName)
-        );
+        mediaPlayerController.setMovieFile(movieFile);
         mediaPlayerController.initialize();
         var stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         var scene = new Scene(mediaPlayer);
         stage.setScene(scene);
         stage.show();
-    }
-
-    private File encodeFile(String fileName) {
-        File movieFile = new File(folderPath + "\\" + fileName);
-
-        File transcodedFile = new File(folderPath + File.separator + fileName + "_transcoded.mp4");
-
-        try {
-
-            MultimediaObject multimediaObject = new MultimediaObject(movieFile);
-
-
-            EncodingAttributes encodingAttributes = getEncodingAttributes();
-
-            Encoder encoder = new Encoder();
-            encoder.encode(multimediaObject, transcodedFile, encodingAttributes);
-
-            return transcodedFile;
-        } catch (EncoderException e) {
-            System.err.println("Error during transcoding: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private static EncodingAttributes getEncodingAttributes() {
-        EncodingAttributes encodingAttributes = new EncodingAttributes();
-        encodingAttributes.setOutputFormat("mp4");
-
-        VideoAttributes videoAttributes = new VideoAttributes();
-        videoAttributes.setCodec("h264");
-
-        encodingAttributes.setVideoAttributes(videoAttributes);
-
-        AudioAttributes audioAttributes = new AudioAttributes();
-        audioAttributes.setCodec("aac");
-
-        encodingAttributes.setAudioAttributes(audioAttributes);
-        return encodingAttributes;
     }
 }
